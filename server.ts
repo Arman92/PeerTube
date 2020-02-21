@@ -101,7 +101,9 @@ import {
   pluginsRouter,
   webfingerRouter,
   trackerRouter,
-  createWebsocketTrackerServer, botsRouter
+  createWebsocketTrackerServer,
+  botsRouter,
+  runLiveServer
 } from './server/controllers'
 import { advertiseDoNotTrack } from './server/middlewares/dnt'
 import { Redis } from './server/lib/redis'
@@ -270,6 +272,8 @@ async function startApplication () {
     .catch(err => logger.error('Cannot update streaming playlist infohashes.', { err }))
 
   if (cli.plugins) await PluginManager.Instance.registerPluginsAndThemes()
+
+  runLiveServer()
 
   // Make server listening
   server.listen(port, hostname, () => {
